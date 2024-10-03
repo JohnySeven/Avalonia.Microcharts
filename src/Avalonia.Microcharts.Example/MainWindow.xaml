@@ -6,17 +6,6 @@
         Background="gray"
         x:Class="Avalonia.Microcharts.Example.MainWindow">
 
-        <ItemsControl Items="{Binding Charts}" Margin="0, 0, 20, 20">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="3" Rows="2"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <microcharts:MicrochartControl Chart="{Binding}" Margin="10, 10, 10, 10"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
 
+  <microcharts:MicrochartControl x:Name="Chart" Margin="10, 10, 10, 10"/>
 </Window>

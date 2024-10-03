@@ -33,15 +33,20 @@ namespace Avalonia.Microcharts.Example
 
         public MainWindowViewModel()
         {
-            this.Charts = new Chart[]
-            {
+            this.Charts =
+            [
                 new BarChart() {Entries = this.Entries},
                 new PointChart() {Entries = this.Entries},
-                new LineChart() {Entries = this.Entries},
+                new LineChart() 
+                {
+                    Entries = this.Entries, 
+                    LineMode = LineMode.Spline, 
+                    PointMode = PointMode.None 
+                },
                 new DonutChart() {Entries = this.Entries},
                 new RadialGaugeChart() {Entries = this.Entries},
                 new RadarChart() {Entries = this.Entries}
-            };
+            ];
         }
     }
 }

@@ -25,12 +25,17 @@ namespace Avalonia.Microcharts
 
         public MicrochartControl()
         {
-            this.GetObservable(ChartProperty).Subscribe(ChartChanged);
+
         }
 
-        private void ChartChanged(Chart chart)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            this.InvalidateVisual();
+            base.OnPropertyChanged(change);
+
+            if(change.Property == ChartProperty)
+            {
+                this.InvalidateVisual();
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -53,7 +58,8 @@ namespace Avalonia.Microcharts
 
             public Rect Bounds { get; set; }
 
-            public void Render(IDrawingContextImpl context)
+
+            public void Render(ImmediateDrawingContext context)
             {
                 var bitmap = new SKBitmap((int)Bounds.Width, (int)Bounds.Height, false);
                 var canvas = new SKCanvas(bitmap);
@@ -61,9 +67,11 @@ namespace Avalonia.Microcharts
 
                 Chart.Draw(canvas, (int)Bounds.Width, (int)Bounds.Height);
 
-                if (context is ISkiaDrawingContextImpl skia)
+                    var leaseFeature = context.TryGetFeature<ISkiaSharpApiLeaseFeature>();
+                if (leaseFeature != null)
                 {
-                    skia.SkCanvas.DrawBitmap(bitmap, (int)Bounds.X, (int)Bounds.Y);
+                    using (var lease = leaseFeature.Lease())
+                        lease.SkCanvas.DrawBitmap(bitmap, (int)Bounds.X, (int)Bounds.Y);
                 }
             }
         }
